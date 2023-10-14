@@ -173,15 +173,85 @@ $~$
 ## Soal 13
 > Selain itu, pada subdomain www.parikesit.abimanyu.yyy.com, DocumentRoot disimpan pada /var/www/parikesit.abimanyu.yyy
 
+Pertama-tama download file zip untuk abimanyu dari drive yang disediakan. Kemudian dilakukan unzip, rename dan move ke direktori var/www.
+```sh
+wget -O parikesit.abimanyu.yyy.com.zip "https://drive.google.com/uc?export=download&id=1LdbYntiYVF_NVNgJis1GLCLPEGyIOreS"
+unzip parikesit.abimanyu.yyy.com.zip
+mv parikesit.abimanyu.yyy.com parikesit.abimanyu.E14
+mv parikesit.abimanyu.E14 var/www
+```
+Selanjutnya, pada file konfigurasi /etc/apache2/sites-available/000-default.conf, ditambahkan VirtualHost untuk parikesit.abimanyu berikut: 
+```sh
+echo '<VirtualHost *:80>' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAdmin webmaster@localhost' >> /etc/apache2/sites-available/000-default.conf
+echo '    DocumentRoot /var/www/parikesit.abimanyu.E14' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerName parikesit.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAlias www.parikesit.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ErrorLog ${APACHE_LOG_DIR}/error.log' >> /etc/apache2/sites-available/000-default.conf
+echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined' >> /etc/apache2/sites-available/000-default.conf
+echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+```
+Berikut hasil subdomain parikesit.abimanyu:
+![Screenshot 2023-10-14 222512](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/48e4ca6e-f442-4b6c-b5c0-40ec6d9435b7)
+![Screenshot (358)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/9a5dc525-5ce0-4431-9319-5d31705040ba)
+
 $~$
 
 ## Soal 14
 > Pada subdomain tersebut folder /public hanya dapat melakukan directory listing sedangkan pada folder /secret tidak dapat diakses (403 Forbidden).
 
+Supaya dapat melakukan directory listing pada folder public cukup ditambahkan `Option +Indexes` pada VirtualHost parikesit.abimanyu.
+```sh
+echo '    <Directory /var/www/parikesit.abimanyu.E14/public>' >> /etc/apache2/sites-available/000-default.conf
+echo '        Options +Indexes' >> /etc/apache2/sites-available/000-default.conf
+echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf
+```
+Kemudian folder secret dibuat dan ditambahkan html sederhana.
+```sh
+mkdir var/www/parikesit.abimanyu.E14/secret
+
+echo '<!DOCTYPE html>' > var/www/parikesit.abimanyu.E14/secret/index.html
+echo '<html>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '<head>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '    <title>Hello, World!</title>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '</head>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '<body>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '    <h1>Hello, World!</h1>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '    <p>This is a basic HTML page that says "Hello, World!"</p>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '</body>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+echo '</html>' >> var/www/parikesit.abimanyu.E14/secret/index.html
+```
+Untuk membatasi folder secret agak tidak dapat diakses, ditambahkan `Deny from all` pada VirtualHost parikesit.abimanyu.
+```sh
+echo '    <Directory /var/www/parikesit.abimanyu.E14/secret>' >> /etc/apache2/sites-available/000-default.conf
+echo '        Deny from all' >> /etc/apache2/sites-available/000-default.conf
+echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil dari directory listing folder public:
+![Screenshot 2023-10-14 223228](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/37757049-d816-4b6e-9214-6e5e1a70ff1e)
+![Screenshot (359)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/3a37d205-35dd-4ccc-bfe0-35a2a556efe9)
+Berikut hasil dari akses folder secret:
+![Screenshot 2023-10-14 223233](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/ce62ed7f-eb06-4ee3-bfff-50f30fba293f)
+![Screenshot (361)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/0c3fc254-214a-496d-b8e6-64842f602028)
+
 $~$
 
 ## Soal 15
 > Buatlah kustomisasi halaman error pada folder /error untuk mengganti error kode pada Apache. Error kode yang perlu diganti adalah 404 Not Found dan 403 Forbidden.
+
+Pada VirtualHost parikesit.abimanyu ditambahkan `ErrorDocument` 403 dan 404 yang diarahkan pada html masing-masing.
+```sh
+echo '    ErrorDocument 403 /error/403.html' >> /etc/apache2/sites-available/000-default.conf
+echo '    ErrorDocument 404 /error/404.html' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil dari error 403:
+![Screenshot 2023-10-14 223233](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/ce62ed7f-eb06-4ee3-bfff-50f30fba293f)
+![Screenshot (360)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/e5718bdc-3ac4-4ab6-b17b-cdb9b81e3e52)
+Berikut hasil dari error 404:
+![Screenshot 2023-10-14 223701](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/49683448-0f3c-48e6-bc00-261e9389b12a)
+![Screenshot (362)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/e83db9cc-48f1-4735-8729-952bbe4ea746)
 
 $~$
 
