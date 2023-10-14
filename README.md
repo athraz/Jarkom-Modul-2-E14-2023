@@ -258,6 +258,16 @@ $~$
 ## Soal 16
 > Buatlah suatu konfigurasi virtual host agar file asset www.parikesit.abimanyu.yyy.com/public/js menjadi www.parikesit.abimanyu.yyy.com/js 
 
+Karena sudah ditambahkan directory listing pada soal sebelumnya, maka cukup ditambahkan alias pada VirtualHost parikesit.abimanyu sebagai berikut:
+```sh
+echo '    Alias "/js" "/var/www/parikesit.abimanyu.E14/public/js"' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil sebelum dan sesudah ditambahkan alias:
+![Screenshot 2023-10-14 224422](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/c53fa9d5-16af-48de-b410-98d1ee7a40b1)
+![Screenshot (363)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/032f6a14-cbf5-4cca-8e0f-d1297e2e4eff)
+![Screenshot (364)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/2d4dcd7b-2999-4724-adaf-b87319bde0fc)
+
 $~$
 
 ## Soal 17
@@ -268,13 +278,72 @@ $~$
 ## Soal 18
 > Untuk mengaksesnya buatlah autentikasi username berupa “Wayang” dan password “baratayudayyy” dengan yyy merupakan kode kelompok. Letakkan DocumentRoot pada /var/www/rjp.baratayuda.abimanyu.yyy.
 
+Pertama-tama membuat file password dengan username dan password yang telah ditentukan.
+```sh
+htpasswd -bc /etc/password Wayang baratayudaE14
+```
+Selanjutnya ditambahkan konfigurasi pada VirtualHost rjp.baratayuda.abimanyu, yaitu `AuthUserFile` yang mengarah pada file password yang telah dibuat serta `Require user Wayang`.
+```sh
+echo '    <Directory /var/www/rjp.baratayuda.abimanyu.E14>' >> /etc/apache2/sites-available/000-default.conf
+echo '        AuthType Basic' >> /etc/apache2/sites-available/000-default.conf
+echo '        AuthName "Restricted Files"' >> /etc/apache2/sites-available/000-default.conf
+echo '        AuthUserFile "/etc/password"' >> /etc/apache2/sites-available/000-default.conf
+echo '        Require user Wayang' >> /etc/apache2/sites-available/000-default.conf
+echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil dari mengakses rjp.baratayuda.abimanyu:
+![Screenshot 2023-10-14 224422](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/5d4426cc-a089-498f-a540-b42848a428cc)
+![Screenshot (365)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/f93f3d4c-0416-42ea-9a69-7002d2f081b2)
+![Screenshot (366)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/36cc2807-f98d-4228-8aa4-fbe972978535)
+![Screenshot (367)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/65fafa08-1e9a-406e-8640-cad820a6718f)
+![Screenshot (368)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/cca2b454-cd93-479c-923f-fd5925e6da87)
+
 $~$
 
 ## Soal 19
 > Buatlah agar setiap kali mengakses IP dari Abimanyu akan secara otomatis dialihkan ke www.abimanyu.yyy.com (alias)
+
+Untuk melakukan redirect, tambahkan VirtualHost baru dengan ServerName sesuai IP abimanyu dan Redirect ke www.abimanyu.yyy.com.
+```sh
+echo '<VirtualHost *:80>' >> /etc/apache2/sites-available/000-default.conf
+echo '   ServerName 192.213.3.4' >> /etc/apache2/sites-available/000-default.conf
+echo '   Redirect 301 / http://www.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil dari akses IP abimanyu:
+![Screenshot 2023-10-14 225304](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/74d5b020-f58d-4eaf-8004-2dcd96ce96ae)
+![Screenshot (369)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/4c68e4c8-8d6e-423a-b0fe-e62e862596f1)
+![Screenshot (370)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/be20fabb-3d4c-4968-bdd5-0d53eaa1ca94)
 
 $~$
 
 ## Soal 20
 > Karena website www.parikesit.abimanyu.yyy.com semakin banyak pengunjung dan banyak gambar gambar random, maka ubahlah request gambar yang memiliki substring “abimanyu” akan diarahkan menuju abimanyu.png.
 
+Untuk soal ini, digunakan modul apache yaitu mod_rewrite. Berikut cara mengaktifkan modul tersebut:
+```sh
+a2enmod rewrite
+```
+Kemudian membuat Directory baru pada VirtualHost parikesit dan ditambahkan directive `RewriteCond` dan `RewriteRule` sebagai berikut. RewriteCond pertama untuk mengecek extension gambar (jpg, png). RewriteCond kedua untuk mengecek substring abimanyu. RewriteCond ketiga untuk membatasi URL public/images/abimanyu.png agar tidak terjadi looping.
+```sh
+echo '    <Directory /var/www/parikesit.abimanyu.E14>' >> /etc/apache2/sites-available/000-default.conf
+echo '        RewriteEngine On' >> /etc/apache2/sites-available/000-default.conf
+echo '        RewriteCond %{REQUEST_URI} \.(jpg|png)$ [NC]' >> /etc/apache2/sites-available/000-default.conf
+echo '        RewriteCond %{REQUEST_URI} abimanyu [NC]' >> /etc/apache2/sites-available/000-default.conf
+echo '        RewriteCond %{REQUEST_URI} !^/public/images/abimanyu\.png [NC]' >> /etc/apache2/sites-available/000-default.conf
+echo '        RewriteRule ^(.*)$ http://www.parikesit.abimanyu.E14.com/public/images/abimanyu.png' >> /etc/apache2/sites-available/000-default.conf
+echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil request gambar yang terdapat substring abimanyu:
+![Screenshot 2023-10-14 230118](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/99d41af1-d232-4f5b-8dc3-857b6db1e2ae)
+![Screenshot (372)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/30df7482-6ed3-4ac9-b5bd-7cf630262d97)
+![Screenshot (373)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/e7a6dcdf-54d0-4312-98e2-ade00098b54c)
+![Screenshot (374)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/9fe39a5c-643e-40a9-b219-2de5cad0953c)
+Berikut hasil request bukan gambar tapi terdapat substring abimanyu:
+![Screenshot 2023-10-14 230124](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/c3b2b06d-bba4-45d0-93c2-30e3af4baaa7)
+![Screenshot (375)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/3cf77926-bd7e-4de7-902f-0c42d14e1d91)
+
+$~$
