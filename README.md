@@ -102,6 +102,16 @@ $~$
 ## Soal 8
 > Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui Werkudara dengan akses rjp.baratayuda.abimanyu.yyy.com dengan alias www.rjp.baratayuda.abimanyu.yyy.com yang mengarah ke Abimanyu.
 
+Untuk membuat subdomain rjp.baratayuda.abimanyu.yyy.com, ditambahkan A dan CNAME pada file /etc/bind/Baratayuda/baratayuda.abimanyu.E14.com.
+```sh
+echo 'rjp     IN      A       192.213.3.4' >> /etc/bind/Baratayuda/baratayuda.abimanyu.E14.com
+echo 'www.rjp IN      CNAME   rjp.baratayuda.abimanyu.E14.com.' >> /etc/bind/Baratayuda/baratayuda.abimanyu.E14.com
+```
+
+Berikut hasil pembuatan subdomain rjp.baratayuda:
+![Screenshot 2023-10-14 220114](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/6976698c-8f72-4209-b38d-8e6c72635bd3)
+![Screenshot 2023-10-14 220136](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/e5f794eb-36c9-4640-b96c-448f89c85a87)
+
 $~$
 
 ## Soal 9
@@ -117,10 +127,46 @@ $~$
 ## Soal 11
 > Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
 
+Pertama-tama download file zip untuk abimanyu dari drive yang disediakan. Kemudian dilakukan unzip, rename dan move ke direktori var/www.
+```sh
+wget -O abimanyu.yyy.com.zip "https://drive.google.com/uc?export=download&id=1a4V23hwK9S7hQEDEcv9FL14UkkrHc-Zc"
+unzip abimanyu.yyy.com.zip
+mv abimanyu.yyy.com abimanyu.E14
+mv abimanyu.E14 var/www
+```
+Selanjutnya, pada file konfigurasi /etc/apache2/sites-available/000-default.conf, ditambahkan potongan kode berikut: 
+```sh
+echo '<VirtualHost *:80>' > /etc/apache2/sites-available/000-default.conf
+echo '    ServerAdmin webmaster@localhost' >> /etc/apache2/sites-available/000-default.conf
+echo '    DocumentRoot /var/www/abimanyu.E14' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerName abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAlias www.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ErrorLog ${APACHE_LOG_DIR}/error.log' >> /etc/apache2/sites-available/000-default.conf
+echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined' >> /etc/apache2/sites-available/000-default.conf
+echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil dari web server abimanyu pada client:
+![Screenshot 2023-10-14 221020](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/4057c316-14e8-44d3-add1-576c0d1683fe)
+![Screenshot (355)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/d42a5f6c-827f-4f52-bf5d-5e315ec573fb)
+
 $~$
 
 ## Soal 12
 > Setelah itu ubahlah agar url www.abimanyu.yyy.com/index.php/home menjadi www.abimanyu.yyy.com/home.
+
+Pada file /etc/apache2/sites-available/000-default.conf, ditambahkan Directory listing dan alias pada VirtualHost abimanyu sebagai berikut:
+```sh
+echo '    <Directory /var/www/abimanyu.E14/index.php/home>' >> /etc/apache2/sites-available/000-default.conf
+echo '            Options +Indexes' >> /etc/apache2/sites-available/000-default.conf
+echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf
+echo '    Alias "/home" "/var/www/abimanyu.E14/index.php/home"' >> /etc/apache2/sites-available/000-default.conf
+```
+
+Berikut hasil sebelum dan sesudah ditambahkan potongan kode diatas:
+![Screenshot 2023-10-14 221509](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/e30461a5-6b44-4e4f-89a4-75ca8a27c223)
+![Screenshot 2023-10-14 221645](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/8d4c840b-cc21-4942-bda5-3215f4077435)
+![Screenshot (356)](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/3d965c59-9907-4bef-93b3-6219db981927)
 
 $~$
 
