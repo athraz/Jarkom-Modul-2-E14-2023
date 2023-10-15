@@ -11,6 +11,91 @@
 Berikut topologi yang digunakan:
 ![Screenshot 2023-10-14 212736](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/6ed48f50-55c6-440b-9cbb-6b334f55a7c9)
 
+Konfigurasi Pandudewanata:
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 192.213.1.1
+	netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+	address 192.213.2.1
+	netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+	address 192.213.3.1
+	netmask 255.255.255.0
+```
+Konfigurasi Sadewa:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.1.2
+	netmask 255.255.255.0
+	gateway 192.213.1.1
+```
+Konfigurasi Nakula:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.1.3
+	netmask 255.255.255.0
+	gateway 192.213.1.1
+```
+Konfigurasi Yudhistira:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.2.2
+	netmask 255.255.255.0
+	gateway 192.213.2.1
+```
+Konfigurasi Werkudara:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.3.2
+	netmask 255.255.255.0
+	gateway 192.213.3.1
+```
+Konfigurasi Arjuna:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.3.3
+	netmask 255.255.255.0
+	gateway 192.213.3.1
+```
+Konfigurasi Abimanyu:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.3.4
+	netmask 255.255.255.0
+	gateway 192.213.3.1
+```
+Konfigurasi Prabakusuma:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.3.4
+	netmask 255.255.255.0
+	gateway 192.213.3.1
+```
+Konfigurasi Wisanggeni:
+```
+auto eth0
+iface eth0 inet static
+	address 192.213.3.6
+	netmask 255.255.255.0
+	gateway 192.213.3.1
+```
+
 $~$
 
 ## Soal 2
