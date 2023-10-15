@@ -16,25 +16,142 @@ $~$
 ## Soal 2
 > Buatlah website utama pada node arjuna dengan akses ke arjuna.yyy.com dengan alias www.arjuna.yyy.com dengan yyy merupakan kode kelompok.
 
+
+Pada node Yudhistira, pada file /etc/bind/named.conf.options ditambahkan config sebagai berikut:
+
+```sh
+echo 'zone "arjuna.E14.com" {' > /etc/bind/named.conf.local
+echo '        type master;' >> /etc/bind/named.conf.local
+echo '        file "/etc/bind/jarkom/arjuna.E14.com";' >> /etc/bind/named.conf.local
+echo '};' >> /etc/bind/named.conf.local
+echo '' >> /etc/bind/named.conf.local
+```
+
+Pada node Yudhistira, pada file /etc/bind/jarkom/arjuna.E14.com ditambahkan config sebagai berikut:
+
+```sh
+echo ';' BIND data file for local loopback interface > /etc/bind/jarkom/arjuna.E14.com
+echo ';' BIND data file for local loopback interface >> /etc/bind/jarkom/arjuna.E14.com
+echo '$TTL    604800' >> /etc/bind/jarkom/arjuna.E14.com
+echo '@       IN      SOA     arjuna.E14.com. root.arjuna.E14.com. (' >> /etc/bind/jarkom/arjuna.E14.com
+echo '                    2023101001      ; Serial' >> /etc/bind/jarkom/arjuna.E14.com
+echo '                     604800         ; Refresh' >> /etc/bind/jarkom/arjuna.E14.com
+echo '                      86400         ; Retry' >> /etc/bind/jarkom/arjuna.E14.com
+echo '                    2419200         ; Expire' >> /etc/bind/jarkom/arjuna.E14.com
+echo '                     604800 )       ; Negative Cache TTL' >> /etc/bind/jarkom/arjuna.E14.com
+echo ';' BIND data file for local loopback interface >> /etc/bind/jarkom/arjuna.E14.com
+echo '@       IN      NS      arjuna.E14.com.' >> /etc/bind/jarkom/arjuna.E14.com
+echo '@       IN      A       192.213.3.3' >> /etc/bind/jarkom/arjuna.E14.com
+echo 'www     IN      CNAME   arjuna.E14.com.' >> /etc/bind/jarkom/arjuna.E14.com
+```
+
+Dokumentasi:
+
+
 $~$
 
 ## Soal 3
 > Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
+
+Pada node Yudhistira, pada file /etc/bind/named.conf.options ditambahkan config sebagai berikut:
+
+```sh
+echo 'zone "abimanyu.E14.com" {' >> /etc/bind/named.conf.local
+echo '        type master;' >> /etc/bind/named.conf.local
+echo '        file "/etc/bind/jarkom/abimanyu.E14.com";' >> /etc/bind/named.conf.local
+echo '};' >> /etc/bind/named.conf.local
+echo '' >> /etc/bind/named.conf.local >> /etc/bind/named.conf.local
+```
+
+Pada node Yudhistira, pada file /etc/bind/jarkom/abimanyu.E14.com ditambahkan config sebagai berikut:
+
+```sh
+echo ';' BIND data file for local loopback interface > /etc/bind/jarkom/abimanyu.E14.com
+echo '$TTL    604800' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '@       IN      SOA     abimanyu.E14.com. root.abimanyu.E14.com. (' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '                              2023101001         ; Serial' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '                         604800         ; Refresh' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '                          86400         ; Retry' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '                        2419200         ; Expire' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '                         604800 )       ; Negative Cache TTL' >> /etc/bind/jarkom/abimanyu.E14.com
+echo ';' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '@       IN      NS      abimanyu.E14.com.' >> /etc/bind/jarkom/abimanyu.E14.com
+echo '@       IN      A       192.213.3.4' >> /etc/bind/jarkom/abimanyu.E14.com
+echo 'www     IN      CNAME   abimanyu.E14.com.' >> /etc/bind/jarkom/abimanyu.E14.com
+```
+
+Dokumentasi:
 
 $~$
 
 ## Soal 4
 > Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
 
+Pada node Yudhistira, pada file /etc/bind/jarkom/abimanyu.E14.com ditambahkan config sebagai berikut:
+
+```sh
+echo 'parikesit       IN      A       192.213.3.4' >> /etc/bind/jarkom/abimanyu.E14.com
+echo 'www.parikesit       IN      CNAME       abimanyu.E14.com.' >> /etc/bind/jarkom/abimanyu.E14.com
+```
+
+Dokumentasi:
 $~$
 
 ## Soal 5
 > Buat juga reverse domain untuk domain utama. (Abimanyu saja yang direverse)
 
+Pada node Yudhistira, pada file /etc/bind/named.conf.options ditambahkan config sebagai berikut:
+
+```sh
+echo 'zone "2.213.192.in-addr.arpa" {' >> /etc/bind/named.conf.local
+echo '    type master;' >> /etc/bind/named.conf.local
+echo '    file "/etc/bind/jarkom/2.213.192.in-addr.arpa";' >> /etc/bind/named.conf.local
+echo '};' >> /etc/bind/named.conf.local
+```
+
+Pada node Yudhistira, pada file /etc/bind/jarkom/2.213.192.in-addr.arpa ditambahkan config sebagai berikut:
+
+```sh
+echo ';' BIND data file for local loopback interface > /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo ';' BIND data file for local loopback interface >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '$TTL    604800' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '@       IN      SOA     abimanyu.E14.com. root.abimanyu.E14.com. (' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '                    2023101001      ; Serial' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '                     604800         ; Refresh' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '                      86400         ; Retry' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '                    2419200         ; Expire' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '                     604800 )       ; Negative Cache TTL' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '2.213.192.in-addr.arpa.     IN      NS      abimanyu.E14.com.' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+echo '2                       IN      PTR     abimanyu.E14.com.' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
+```
+
+Dokumentasi:
+
 $~$
 
 ## Soal 6
 > Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
+
+Pada node Yudhistira, pada file /etc/bind/named.conf.options ditambahkan config sebagai berikut:
+
+```sh
+echo '        notify yes;' >> /etc/bind/named.conf.local
+echo '        also-notify { 192.213.3.2; };' >> /etc/bind/named.conf.local
+echo '        allow-transfer { 192.213.3.2; };' >> /etc/bind/named.conf.local
+```
+
+Pada node werkudara, pada file /etc/bind/named.conf.options ditambahkan config sebagai berikut:
+
+```sh
+echo 'zone "abimanyu.E14.com" {' > /etc/bind/named.conf.local
+echo '    type slave;' >> /etc/bind/named.conf.local
+echo '    masters { 192.213.2.2; };' >> /etc/bind/named.conf.local
+echo '    file "/var/lib/bind/abimanyu.E14.com";' >> /etc/bind/named.conf.local
+echo '};' >> /etc/bind/named.conf.local
+```
+
+Dokumentasi:
 
 $~$
 
@@ -117,10 +234,63 @@ $~$
 ## Soal 9
 > Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
 
+Pada node 3 worker, pada file /etc/nginx/sites-available/arjuna.E14.com ditambahkan config sebagai berikut:
+
+```sh
+echo 'server {
+    listen port_sesuai_soal;
+    root /var/www/arjuna.E14.com;
+    index index.php index.html index.htm;
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # pass PHP scripts to FastCGI server
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    error_log /var/log/nginx/arjuna.E14.com_error.log;
+    access_log /var/log/nginx/arjuna.E14.com_access.log;
+}' > /etc/nginx/sites-available/arjuna.E14.com
+```
+dokumentasi ```lynx ip_salah_satu_worker:port```:
+
+dokumentasi link : 
+
+
 $~$
 
 ## Soal 10
 > Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh: Prabakusuma 8001, Abimanyu 8002, Wisanggeni 8003
+
+Pada node arjuna worker, pada file /etc/nginx/sites-available/lb-arjuna.E14.com ditambahkan config sebagai berikut:
+
+```sh
+echo '# Default menggunakan Round Robin
+upstream myweb {
+    server 192.213.3.4:8002;
+    server 192.213.3.5:8001;
+    server 192.213.3.6:8003;
+}
+server {
+    listen 80;
+    server_name arjuna.E14.com;
+
+    location / {
+        proxy_pass http://myweb;
+    }
+}' > /etc/nginx/sites-available/lb-arjuna.E14.com
+```
+dokumentasi:
+
 
 $~$
 
@@ -272,6 +442,35 @@ $~$
 
 ## Soal 17
 > Agar aman, buatlah konfigurasi agar www.rjp.baratayuda.abimanyu.yyy.com hanya dapat diakses melalui port 14000 dan 14400.
+
+pada file konfigurasi /etc/apache2/sites-available/000-default.conf, ditambahkan VirtualHost untuk rjp.baratayuda.abimanyu berikut:
+
+```sh
+echo '<VirtualHost *:14000>' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAdmin webmaster@localhost' >> /etc/apache2/sites-available/000-default.conf
+echo '    DocumentRoot /var/www/rjp.baratayuda.abimanyu.E14' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerName rjp.baratayuda.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAlias www.rjp.baratayuda.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ErrorLog ${APACHE_LOG_DIR}/error-14000.log' >> /etc/apache2/sites-available/000-default.conf
+echo '    CustomLog ${APACHE_LOG_DIR}/access-14000.log combined' >> /etc/apache2/sites-available/000-default.conf
+echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+
+echo '<VirtualHost *:14400>' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAdmin webmaster@localhost' >> /etc/apache2/sites-available/000-default.conf
+echo '    DocumentRoot /var/www/rjp.baratayuda.abimanyu.E14' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerName rjp.baratayuda.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ServerAlias www.rjp.baratayuda.abimanyu.E14.com' >> /etc/apache2/sites-available/000-default.conf
+echo '    ErrorLog ${APACHE_LOG_DIR}/error-14400.log' >> /etc/apache2/sites-available/000-default.conf
+echo '    CustomLog ${APACHE_LOG_DIR}/access-14400.log combined' >> /etc/apache2/sites-available/000-default.conf
+echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+```
+lalu pada file konfigurasi /etc/apache2/ports.conf, ditambahkan config sebagai berikut:
+
+```sh
+echo 'Listen 14000' >> /etc/apache2/ports.conf
+echo 'Listen 14400' >> /etc/apache2/ports.conf
+```
+dokumentasi:
 
 $~$
 
