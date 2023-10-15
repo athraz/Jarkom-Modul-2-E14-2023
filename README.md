@@ -45,8 +45,8 @@ echo '@       IN      A       192.213.3.3' >> /etc/bind/jarkom/arjuna.E14.com
 echo 'www     IN      CNAME   arjuna.E14.com.' >> /etc/bind/jarkom/arjuna.E14.com
 ```
 
-Dokumentasi:
-
+Berikut hasil ping arjuna.yyy.com:
+![2](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/575fbe16-33ba-462d-8139-8198a98e38b4)
 
 $~$
 
@@ -80,7 +80,8 @@ echo '@       IN      A       192.213.3.4' >> /etc/bind/jarkom/abimanyu.E14.com
 echo 'www     IN      CNAME   abimanyu.E14.com.' >> /etc/bind/jarkom/abimanyu.E14.com
 ```
 
-Dokumentasi:
+Berikut hasil ping abimanyu.yyy.com:
+![3](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/4268b390-c2ec-464c-bb40-eaf4a638f813)
 
 $~$
 
@@ -94,7 +95,9 @@ echo 'parikesit       IN      A       192.213.3.4' >> /etc/bind/jarkom/abimanyu.
 echo 'www.parikesit       IN      CNAME       abimanyu.E14.com.' >> /etc/bind/jarkom/abimanyu.E14.com
 ```
 
-Dokumentasi:
+Berikut hasil ping parikesit.abimanyu.yyy.com:
+![4](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/7b75fe54-4dcc-44dc-a01a-192e84c7643e)
+
 $~$
 
 ## Soal 5
@@ -126,7 +129,8 @@ echo '2.213.192.in-addr.arpa.     IN      NS      abimanyu.E14.com.' >> /etc/bin
 echo '2                       IN      PTR     abimanyu.E14.com.' >> /etc/bind/jarkom/2.213.192.in-addr.arpa
 ```
 
-Dokumentasi:
+Berikut hasil reverse domain abimanyu:
+![5](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/4c789a81-2ab0-4b4d-b685-cb83d386e3ef)
 
 $~$
 
@@ -151,7 +155,9 @@ echo '    file "/var/lib/bind/abimanyu.E14.com";' >> /etc/bind/named.conf.local
 echo '};' >> /etc/bind/named.conf.local
 ```
 
-Dokumentasi:
+Berikut hasil ping abimanyu.yyy.com dengan service bind9 pada DNS Master dimatikan:
+![6_1](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/b07d2d16-3824-4e16-ace0-fd2f7e031da7)
+![6_2](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/0794527e-19de-4e3c-b402-c8ded5da1768)
 
 $~$
 
@@ -261,10 +267,9 @@ echo 'server {
     access_log /var/log/nginx/arjuna.E14.com_access.log;
 }' > /etc/nginx/sites-available/arjuna.E14.com
 ```
-dokumentasi ```lynx ip_salah_satu_worker:port```:
-
-dokumentasi link : 
-
+Berikut hasil dari ```lynx ip_salah_satu_worker:port```:
+![9_1](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/ccef40ea-6453-4712-bb1d-9f6c2f678768) 
+![9_2](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/236173fd-544c-47a1-a555-f9c93538653e)
 
 $~$
 
@@ -289,8 +294,11 @@ server {
     }
 }' > /etc/nginx/sites-available/lb-arjuna.E14.com
 ```
-dokumentasi:
-
+Berikut hasil dari `lynx arjuna.yyy.com` dengan adanya load balancer:
+![10_1](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/c279d218-3ebe-4f29-a7ac-f02ff41e0a03)
+![10_2](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/1b0deeea-12be-47b0-9877-9587130c1e27)
+![10_3](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/efc733ac-aee1-4351-8b19-05f4c3b53a09)
+![10_4](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/6807a6c2-0e39-4d23-b32b-f17ba053385f)
 
 $~$
 
@@ -470,7 +478,10 @@ lalu pada file konfigurasi /etc/apache2/ports.conf, ditambahkan config sebagai b
 echo 'Listen 14000' >> /etc/apache2/ports.conf
 echo 'Listen 14400' >> /etc/apache2/ports.conf
 ```
-dokumentasi:
+Berikut hasil dari mengakses rjp.baratayuda.abimanyu.yyy.com melalui port 14000 dan 14400:
+![17_1](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/5ab3699d-108e-4616-b978-754e16d05a8d)
+![17_2](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/1ce5adc3-99e7-4a18-b1b0-8e16988b10be)
+![17_3](https://github.com/athraz/Jarkom-Modul-2-E14-2023/assets/96050618/5465a6f9-f290-4cda-8721-4424911d5923)
 
 $~$
 
